@@ -1,0 +1,14 @@
+class Solution(object):
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        res=[[]]
+        for n in nums:
+            newres = []
+            for re in res:
+                for i in xrange(len(re)+1):
+                    newres.append(re[:i]+[n]+re[i:])
+            res=newres
+        return res
