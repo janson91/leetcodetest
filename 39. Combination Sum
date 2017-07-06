@@ -1,0 +1,23 @@
+class Solution(object):
+    def dfs(self, target, candidates, tempsum, tempsolution=[], result=[]):
+        for _,i in enumerate(candidates):
+            tempsum+=i
+            if tempsum<=target:
+                ts = tempsolution+[i]
+                if tempsum==target:
+                    result += ts,
+                    return result
+                else:
+                    self.dfs(target, candidates[_:],tempsum,ts,result)
+            else:
+                break
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        candidates.sort()
+        res=[]
+        self.dfs(target, candidates, 0)
+        return res
