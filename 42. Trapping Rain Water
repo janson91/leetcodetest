@@ -1,0 +1,19 @@
+class Solution(object):
+    def trap(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        flag=0
+        resleft=height[:]
+        for _,i in enumerate(resleft):
+            if i > flag:
+                flag=i
+            resleft[_]=flag-i
+        resright=height[::-1]
+        flag=0
+        for _,i in enumerate(resright):
+            if i > flag:
+                flag=i
+            resright[_]=flag-i
+        return sum(map(min, resleft,resright[::-1]))
