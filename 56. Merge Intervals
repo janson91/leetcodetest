@@ -1,0 +1,24 @@
+#俩坑，一个是输入是[]，另一个是会有[1,4],[2,3]这种情况出现
+# Definition for an interval.
+# class Interval(object):
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
+
+class Solution(object):
+    def merge(self, intervals):
+        """
+        :type intervals: List[Interval]
+        :rtype: List[Interval]
+        """
+        if intervals==[]:
+            return []
+        intervals = sorted(intervals,key=lambda inter:inter.start)
+        new_intervals=[]
+        new_intervals.append(intervals[0])
+        for inter in intervals:
+            if inter.start <= new_intervals[-1].end:
+                new_intervals[-1].end=max(inter.end,new_intervals[-1].end)
+            else:
+                new_intervals.append(inter)
+        return new_intervals
