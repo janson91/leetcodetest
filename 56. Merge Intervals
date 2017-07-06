@@ -22,3 +22,19 @@ class Solution(object):
             else:
                 new_intervals.append(inter)
         return new_intervals
+
+
+#感觉这个写的简洁一些，主要点在于可以用if一个list来判断这个list是不是空
+class Solution(object):
+    def merge(self, intervals):
+        """
+        :type intervals: List[Interval]
+        :rtype: List[Interval]
+        """
+        res = []
+        for i in sorted(intervals, key=lambda i:i.start):
+            if res and i.start <= res[-1].end:
+                res[-1].end = max(res[-1].end, i.end)
+            else:
+                res.append(i)
+        return res
