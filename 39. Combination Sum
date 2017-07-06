@@ -1,14 +1,14 @@
 class Solution(object):
     def dfs(self, target, candidates, tempsum, tempsolution=[], result=[]):
         for _,i in enumerate(candidates):
-            tempsum+=i
-            if tempsum<=target:
+            judge=tempsum+i
+            if judge<=target:
                 ts = tempsolution+[i]
-                if tempsum==target:
+                if judge==target:
                     result += ts,
-                    return result
+                    break
                 else:
-                    self.dfs(target, candidates[_:],tempsum,ts,result)
+                    self.dfs(target, candidates[_:],judge,ts,result)
             else:
                 break
     def combinationSum(self, candidates, target):
@@ -19,5 +19,5 @@ class Solution(object):
         """
         candidates.sort()
         res=[]
-        self.dfs(target, candidates, 0)
+        self.dfs(target, candidates, 0,[], res)
         return res
