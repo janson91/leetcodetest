@@ -1,0 +1,24 @@
+#有很大改进空间，一方面是空间复杂度，可以用一个列表来做而不是矩阵
+#另一方面不知道为什么时间在leet上排的比较靠后，需要再研究一下
+#另外动态规划可以用递归来做
+class Solution(object):
+    def minDistance(self, word1, word2):
+        """
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        m, n = len(word1), len(word2)
+        grid = [[0] * (m + 1) for r in range(n + 1)]
+        for i in range(m + 1):
+            grid[0][i] = i
+        for j in range(n + 1):
+            grid[j][0] = j
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if word1[i-1] == word2[j-1]:
+                    grid[j][i] = grid[j - 1][i - 1]
+                else:
+                    grid[j][i] = min(grid[j - 1][i], grid[j - 1][i - 1], grid[j][i - 1]) + 1
+        return grid[n][m]
