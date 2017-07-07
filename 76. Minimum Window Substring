@@ -1,0 +1,22 @@
+#这题很不错啊，需要继续研究
+from collections import OrderedDict
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        need, miss = collections.Counter(t),len(t)
+        start=end=0
+        f=0
+        for i,n in enumerate(s,1):
+            miss-=need[n]>0
+            need[n]-=1
+            if miss == 0:
+                while f<i and need[s[f]] < 0:
+                    need[s[f]]+=1
+                    f+=1
+                if not end or i-f<end-start:
+                    start,end=f,i
+        return s[start:end]
