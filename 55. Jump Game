@@ -1,0 +1,29 @@
+#读题不认真啊，做了好久。是每一步最多可以走这么多步数，而不是只能走这么多步
+def canJump(self, nums):
+    m = 0
+    for i, n in enumerate(nums):
+        if i > m:
+            return False
+        m = max(m, i+n)
+    return True
+    
+   
+   
+#这个是只能走这么多步而且可以两面走的，不过直接放在这里会报错，runtime error 可能是内存超了吧
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        end=len(nums)-1
+        mask=[0]*len(nums)
+        def jump(mask,flag):
+            if flag==end:
+                return True
+            if flag < 0 or flag > end or mask[flag]:
+                return False
+            if flag>0 or flag <=end:
+                mask[flag]=1
+                return jump(mask,flag-nums[flag]) or jump(mask,flag+nums[flag])
+        return jump(mask,0)
