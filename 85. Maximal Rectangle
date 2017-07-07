@@ -1,0 +1,58 @@
+
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix:
+            return 0
+        area=0
+        line=[0]*len(matrix[0])
+        for histo in matrix:
+            for i,n in enumerate(histo):
+                if int(n):
+                    line[i]+=int(n)
+                else:
+                    line[i]=0
+            area=max(area,self.maxRect(line))
+        return area
+        
+    def maxRect(self,histo):
+        histo.append(0)
+        stack=[-1]
+        area=0
+        for i in range(len(histo)):
+            while histo[i]<histo[stack[-1]]:
+                h=histo[stack.pop()]
+                w=i-stack[-1]-1
+                area=max(area,h*w)
+            stack.append(i)
+        histo.pop()
+        return area
+
+
+
+
+#思想不要僵化，就算是用上一题的程序，也不需要直接用，像下面这样用就可以了
+class Solution(object):
+    def maximalRectangle(self, matrix):
+        """
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix or not matrix[0]: 
+            return 0
+        N = len(matrix[0])
+        cols = [0] * (N+1)
+        ans = 0
+        for row in matrix:
+            st = [-1]
+            for i in range(N+1):
+                cols[i] = cols[i] + 1 if i < N and row[i] == "1" else 0
+                while cols[st[-1]] > cols[i]:
+                    h = cols[st.pop()]
+                    w = i - st[-1] - 1
+                    ans = max(ans, h*w)
+                st.append(i)
+        return ans
