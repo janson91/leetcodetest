@@ -1,0 +1,41 @@
+#本题自己考虑了很多边界条件，但其实不用考虑
+#逻辑要清晰！！！
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseBetween(self, head, m, n):
+        """
+        :type head: ListNode
+        :type m: int
+        :type n: int
+        :rtype: ListNode
+        """
+        if head.next==None or m==n:
+            return head
+        flagm=ListNode(0)
+        flagm.next=head
+        root=flagm
+        for i in range(m-1):
+            flagm=flagm.next
+            if flagm==None:
+                return head
+        temp=mnext=flagm.next
+        tempnext=temp.next
+        for _ in range(n-m):
+            if temp==None:
+                break
+            else:
+                if tempnext==None:
+                    mnext=temp
+                    return head
+                tempnextnext=tempnext.next
+                tempnext.next=temp
+                temp=tempnext
+                tempnext=tempnextnext
+        mnext.next=tempnext
+        flagm.next=temp
+        return root.next
