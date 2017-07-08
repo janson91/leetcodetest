@@ -1,0 +1,96 @@
+#我的方法是从前往后扫一遍，再反向扫到正向没处理的那些
+class Solution(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left=right=0
+        length_left=0
+        length_right=0
+        index=-1
+        for i,p in enumerate(s):
+            if p =='(':
+                left+=1
+            else:
+                right+=1
+            if left<right:
+                length_left=max(length_left,left*2)
+                left=right=0
+                index=i
+        if left==right:
+            length_right=max(length_right,left*2)
+        left = right = 0
+        for i,p in enumerate(s[::-1]):
+            if i == len(s)-index-1:
+                break
+            if p==')':
+                right+=1
+            else:
+                left+=1
+            if left>right:
+                length_right=max(length_right,right*2)
+                left=right=0
+        if left==right:
+            length_right=max(length_right,left*2)
+        return max(length_left,length_right)
+        
+#这个人用的dp方法，当前）的值应该等于：如果前一个是（，等于再前一个+2；
+#如果是），等于前一个）的值加上：遥远前方没配对的话是2，如果是）的话或者前一个）是0就是0
+class Solution(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # use 1D DP
+        # dp[i] records the longestValidParenthese EXACTLY ENDING at s[i]
+        dp = [0 for x in xrange(len(s))]
+        max_to_now = 0
+        for i in xrange(1,len(s)):
+            if s[i] == ')':
+                # case 1: ()()
+                if s[i-1] == '(':
+                    # add nearest parentheses pairs + 2
+                    dp[i] = dp[i-2] + 2
+                # case 2: (()) 
+                # i-dp[i-1]-1 is the index of last "(" not paired until this ")"
+                elif i-dp[i-1]-1 >= 0 and s[i-dp[i-1]-1] == '(':
+                    if dp[i-1] > 0: # content within current matching pair is valid 
+                    # add nearest parentheses pairs + 2 + parentheses before last "("
+                        dp[i] = dp[i-1] + 2 + dp[i-dp[i-1]-2]
+                    else:
+                    # otherwise is 0
+                        dp[i] = 0
+                max_to_now = max(max_to_now, dp[i])
+        return max_to_now
+
+#stack 也很合理，比如")))())()()(()"会留下[0,1,2,5,10]然后算最大的gap就行了
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int n = s.length(), longest = 0;
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(') st.push(i);
+            else {
+                if (!st.empty()) {
+                    if (s[st.top()] == '(') st.pop();
+                    else st.push(i);
+                }
+                else st.push(i);
+            }
+        }
+        if (st.empty()) longest = n;
+        else {
+            int a = n, b = 0;
+            while (!st.empty()) {
+                b = st.top(); st.pop();
+                longest = max(longest, a-b-1);
+                a = b;
+            }
+            longest = max(longest, a);
+        }
+        return longest;
+    }
+};
