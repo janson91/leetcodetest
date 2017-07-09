@@ -1,0 +1,20 @@
+#明明两个变量就行，自己非要用了三个变量
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if len(prices)<2:
+            return 0
+        count=0
+        small=big=prices[0]
+        for i in prices:
+            if i < small:
+                count=max(count,big-small)
+                small=i
+                big=small-1
+            elif i > big:
+                big=i
+        count=max(count,big-small)
+        return count
