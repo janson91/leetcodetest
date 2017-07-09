@@ -1,0 +1,51 @@
+.#排列和组合在python里面有写好的，这个是组合combination，在itertools里，排列是permutations
+#1和2是一样的，时间复杂度会超（算20，16）的时候。
+#计算了一下，（20，16）的组合有4845种，但方法一循环里面有1047204次。而迭代则迭代7751次（没有算迭代里面的循环）
+#原因应该是方法4优在k=1和k=n处，就简化了很多。如果算（20，4）的话，也是4845种组合，但是迭代1937次， 而方法二只用6175次循环，少了很多。
+#3直接用的combination
+#4用的c(n,k)=c(n-1,k-1)+c(n-1,k)
+from itertools import combinations
+
+#1
+class Solution(object):
+    def combine(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        # if n==0 or k>n:
+        #     return [[]]
+        # combs=[]
+        # for i in range(n):
+        #     combs.append([i+1])
+        # for _ in range(k-1):
+        #     tempc=[]
+        #     for c in combs:
+        #         for i in range(1,c[0]):
+        #             tempc.append([i]+c)
+        #     combs=tempc
+        # return combs
+
+#2
+        # combs = [[]]
+        # for _ in range(k):
+        #     combs = [[i] + c for c in combs for i in range(1, c[0] if c else n+1)]
+        # return combs
+
+#3
+        # return list(combinations(range(1, n+1), k))
+
+#4
+        if k==1:
+            return [[i] for i in range(1,n+1)]
+        if k==n:
+            return [[i for i in range(1,n+1)]]
+        else:
+            res=[]
+            res+=self.combine(n-1,k)
+            pre=self.combine(n-1,k-1)
+            for p in pre:
+                p.append(n)
+            res += pre
+        return res
