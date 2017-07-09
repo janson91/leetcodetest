@@ -1,0 +1,52 @@
+#自己仿佛想到了各种桶排序，感觉很厉害，才发现其实根本不用麻烦，内置的set就是天然的哈希啊！！！
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        length=len(nums)
+        dic={}
+        for i in nums:
+            m=i//length
+            r=i%length
+            if m not in dic:
+                dic[m]=[r]
+            else:
+                dic[m].append(r)
+        max_length=0
+        for key,values in dic.items():
+            remain=[0]*(length*3)
+            if key-1 in dic:
+                for v in dic[key-1]:
+                    remain[v]=1
+            for v in values:
+                remain[v+length]=1
+            if key+1 in dic:
+                for v in dic[key+1]:
+                    remain[v+length*2]=1
+            le=0
+            for i in remain:
+                if i:
+                    le+=i
+                    max_length=max(max_length,le)
+                else:
+                    le=0
+        return max_length
+
+#############################
+class Solution(object):
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        s = set(nums)
+        max_len = 0
+        for n in nums:
+            if n - 1 not in s:
+                m = n + 1
+                while m in s:
+                    m += 1
+                max_len = max(max_len, m - n)
+        return max_len
