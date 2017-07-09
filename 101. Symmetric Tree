@@ -1,0 +1,46 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        cache=[root]
+        while cache!=[]:
+            length=len(cache)
+            for i in range(len(cache)):
+                if not cache[i] or not cache[length-i-1]:
+                    if cache[i]!=cache[length-i-1]:
+                        return False
+                else:
+                    if cache[i].val!=cache[length-i-1].val:
+                        return False
+            temp=[]
+            for node in cache:
+                if node:
+                    temp.append(node.left)
+                    temp.append(node.right)
+            cache=temp
+        return True
+#最开始考虑错了，但是没有静下心来看看能不能修正，而是直接全删了重新写，看来开始思维不够开阔啊，
+#只需要将左孩子的左孩子和右孩子的右孩子、左孩子的右孩子和右孩子的左孩子分别传就可以了，如下：
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return (root is None) or (self.helper(root.left, root.right))
+    
+    def helper(self, left, right):
+        if not left and not right: return True
+        if not left or not right: return False
+        return (left.val == right.val) and self.helper(left.left, right.right) and self.helper(left.right, right.left)
