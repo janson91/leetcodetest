@@ -1,0 +1,24 @@
+#注意，18-21行明明可以简写为return p==q，真是蠢啊
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def isSameTree(self, p, q):
+        """
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: bool
+        """
+        def same(p,q):
+            if p==None or q==None:
+                if p==q:
+                    return True
+                else:
+                    return False
+            else:
+                return same(p.left,q.left) and same(p.right,q.right) and p.val==q.val
+        return same(p,q)
