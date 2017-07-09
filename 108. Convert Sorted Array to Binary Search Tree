@@ -1,0 +1,41 @@
+#对比一下发现这里nums完全不需要作为参数穿进去，因为相当于全局变量啊
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        
+        def bst(left,right,nums):
+            if left>right:
+                return None
+            mid=(left+right)/2
+            node=TreeNode(nums[mid])
+            node.left=bst(left,mid-1,nums)
+            node.right=bst(mid+1,right,nums)
+            return node
+        return bst(0,len(nums)-1,nums)
+
+
+
+class Solution(object):
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        def sortedArrayToBSTStep(l, r):
+            if l > r: return None
+            m = (l + r) // 2
+            node = TreeNode(nums[m])
+            node.left = sortedArrayToBSTStep(l, m-1)
+            node.right = sortedArrayToBSTStep(m+1, r)
+            return node
+        return sortedArrayToBSTStep(0, len(nums)-1)
