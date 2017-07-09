@@ -1,0 +1,47 @@
+#多简单的题都不要掉以轻心！！！太愚蠢了，这道破题交了7遍
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def maxDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if not root:
+            return 0
+        stack=[]
+        res=0
+        height=0
+        while True:
+            if root:
+                stack.append(root)
+                root=root.left
+            else:
+                temp=stack.pop()
+                while temp==None and stack!=[]:
+                    temp=stack.pop()
+                if temp==None and stack==[]:
+                    break
+                root=temp.right
+                stack.append(None)
+                res=max(res,len(stack))
+        return res
+
+#自己用的是中序遍历，没必要，分而治之就好
+class Solution(object):
+    def maxDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if root == None:
+            return 0
+        leftdepth = self.maxDepth(root.left)
+        rightdepth = self.maxDepth(root.right)
+        
+        return max(leftdepth,rightdepth)+1
