@@ -1,0 +1,55 @@
+#return的地方写的太蠢了，下面的是快一些的方法
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def maxPathSum(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        res=-sys.maxint-1
+        global res
+        def path(root):
+            global res
+            left=right=0
+            if root.left:
+                left=path(root.left)
+            if root.right:
+                right=path(root.right)
+            temp=root.val
+            res=max(res,temp+left+right,temp+left,temp+right,temp)
+            return max(temp,temp+left,temp+right)
+        path(root)
+        return res
+        
+
+
+
+
+
+class Solution(object):
+    def __init__(self):
+        self.re = -(1 << 32)
+    def maxPathSum(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def maxSum(root):
+            if not root:
+                return 0
+            left = maxSum(root.left)
+            right = maxSum(root.right)
+            left = 0 if left < 0 else left
+            right = 0 if right < 0 else right
+            self.re = max(left + right + root.val,self.re)
+            root.val = root.val + max(left,right)
+            return root.val
+        maxSum(root)
+        return self.re
+        
