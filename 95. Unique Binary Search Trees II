@@ -1,0 +1,72 @@
+#动态规划，新的节点k:
+#对于已经生成的每一棵树：
+#k为根，则已经生成的树作为k的左节点
+#k不为根：逐层放入已经生成的树的每一层的最右节点上
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        if n < 1:
+            return []
+        res=[TreeNode(1)]
+        for i in range(2,n+1):
+            new_trees=[]
+            for node_list in res:
+                node_i=TreeNode(i)
+                node_i.left=node_list
+                new_trees.append(self.treeClone(node_i))
+                node_i.left=None
+                p=node_list
+                while p.right!=None:
+                    q=p.right
+                    p.right=node_i
+                    node_i.left=q
+                    new_trees.append(self.treeClone(node_list))
+                    p.right=node_i.left
+                    node_i.left=None
+                    p=p.right
+                p.right=node_i
+                new_trees.append(self.treeClone(node_list))
+                p.right=None
+            res=new_trees
+        return res
+                    
+    def treeClone(self,tree):
+        if tree!=None:
+            root=TreeNode(tree.val)
+            root.left=self.treeClone(tree.left)
+            root.right=self.treeClone(tree.right)
+            return root
+        else:
+            return None
+
+
+#dfs 维护一个cache，自底向上生长树，每一个区间[l,r]中的i
+#所有的树就是i为根，左边数的个数*右边树的个数
+class Solution(object):
+    def generateTrees(self, n):
+        if n < 1: return []
+        cache = {}
+        def generate(first, last):
+            if first > last: return [None]
+            if (first, last) in cache: return cache[first, last]
+            trees = []
+            for root in range(first, last+1):
+                for left in generate(first, root-1):
+                    for right in generate(root+1, last):
+                        node = TreeNode(root)
+                        node.left = left
+                        node.right = right
+                        trees += node,
+            cache[first, last] = trees
+            return trees
+        return generate(1, n)
