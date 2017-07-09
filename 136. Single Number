@@ -1,0 +1,11 @@
+#这个异或真是无语，但确实很有道理啊！
+class Solution(object):
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        result=0
+        for num in nums:
+            result^=num
+        return result
