@@ -1,3 +1,4 @@
+#看二十遍吧，感觉链表的东西都在这呢，就是不太好调试
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -15,24 +16,50 @@ class Solution(object):
         else:
             mid=head
             end=head
-            while not end and not end.next:
+            while end and end.next:
                 mid=mid.next
                 end=end.next.next
-            n_node=mid.next.next
-            node=mid.next
-            node.next=None
+            n_node=mid.next
+            tail=mid
+            tail.next=None
             while n_node:
                 nn_node=n_node.next
-                mid.next=n_node
-                n_node.next=node
-                node=n_node
+                n_node.next=tail
+                tail=n_node
                 n_node=nn_node
             node=head
-            mid=mid.next
-            while mid:
-                pre=head.next
-                post=mid.next
-                node.next=mid
-                mid.next=pre
+            pre=head
+            post=tail
+            while tail.next != None:
+                pre=pre.next
+                post=post.next
+                node.next=tail
+                tail.next=pre
                 node=pre
-                mid=post
+                tail=post
+            node=head
+            while node!=None:
+                node=node.next
+            return
+#简洁版：
+def reorderList(self, head):
+    if not head:
+        return
+        
+    # find the mid point
+    slow = fast = head 
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    # reverse the second half in-place
+    pre, node = None, slow
+    while node:
+        pre, node.next, node = node, pre, node.next
+    
+    # Merge in-place; Note : the last node of "first" and "second" are the same
+    first, second = head, pre
+    while second.next:
+        first.next, first = second, first.next
+        second.next, second = first, second.next
+    return 
