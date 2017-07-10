@@ -1,0 +1,17 @@
+#这个动态规划方法开始自己没有想到
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        hasbreak=[0]*(len(s)+1)
+        hasbreak[-1]=1
+        for i in range(len(s)):
+            for word in wordDict:
+                if word==s[i:i+len(word)] and hasbreak[i-1]:
+                    hasbreak[i+len(word)-1]=1
+                    if hasbreak[-2]:
+                        return True
+        return False
