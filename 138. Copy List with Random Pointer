@@ -18,18 +18,19 @@ class Solution(object):
             new_node=RandomListNode(node.label)
             new_node.next=node.next
             node.next=new_node
+            node=new_node.next
         node=head
-        while node.next:
+        while node:
             new_node=node.next
             if node.random:
                 new_node.random=node.random.next
             node=new_node.next
         node=head
         new_head=head.next
-        new_node=new_head
-        while new_node.next:
+        while node:
+            new_node=node.next
             node.next=new_node.next
             node=node.next
-            if node.next:
+            if node:
                 new_node.next=node.next
         return new_head
