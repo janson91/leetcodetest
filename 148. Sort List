@@ -1,0 +1,44 @@
+#自认为做的还行，虽然中间脑残了一下，不过看到有人再开一个数组，把值排序，再赋值回去，竟然也能通过，不过速度快了不少
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def sortList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head == None or head.next == None:
+            return head
+        #split
+        slow=head
+        fast=head.next
+        while fast and fast.next:
+            slow=slow.next
+            fast=fast.next.next
+        
+        #sortList
+        half=slow.next
+        slow.next=None
+        head=self.sortList(head)
+        half=self.sortList(half)
+        
+        #sort
+        node=pre=ListNode(0)
+        node.next=pre.next=head
+        while head and half:
+            if head.val<half.val:
+                node.next=head
+                head=head.next
+            else:
+                node.next=half
+                half=half.next
+            node=node.next
+        if head:
+            node.next=head
+        if half:
+            node.next=half
+        return pre.next
