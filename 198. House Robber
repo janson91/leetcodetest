@@ -1,0 +1,32 @@
+#希望这种愚蠢的代码越写越少
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums)==0:
+            return 0
+        if len(nums)<3:
+            return max(nums)
+        maxa=nums[0]
+        maxb=max(nums[0],nums[1])
+        for i in nums[2:]:
+            temp=i+maxa
+            maxa=maxb
+            if temp>maxb:
+                maxb=temp
+        return maxb
+
+
+class Solution(object):
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        last, now = 0, 0
+        
+        for i in nums: last, now = now, max(last + i, now)
+                
+        return now
