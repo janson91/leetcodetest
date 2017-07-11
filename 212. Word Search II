@@ -1,0 +1,36 @@
+#基本参照答案，其实自己能写的，这么一边对照答案一边写很难受。下次希望自己写
+class Solution(object):
+    def findWords(self, board, words):
+        """
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        """
+        trie={}
+        for word in words:
+            t=trie
+            for w in word:
+                if w not in t:
+                    t[w]={}
+                t=t[w]
+            t['#']='#'
+        self.res=set()
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                self.dfs(board,i,j,trie,'')
+        return list(self.res)
+    def dfs(self, board, i,j,trie,pre):
+        if '#' in trie:
+            self.res.add(pre)
+        if i<0 or i >=len(board) or j < 0 or j >=len(board[0]):
+            return 
+        c=board[i][j]
+        if c in trie:
+            board[i][j]='$'
+            trie=trie[c]
+            pre=pre+c
+            self.dfs(board,i+1,j,trie,pre)  
+            self.dfs(board,i-1,j,trie,pre) 
+            self.dfs(board,i,j+1,trie,pre) 
+            self.dfs(board,i,j-1,trie,pre) 
+            board[i][j]=c
