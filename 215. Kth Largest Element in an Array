@@ -1,0 +1,49 @@
+#做了很久，需要再练
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        if nums:
+            res = self.quick(nums, 0, len(nums) - 1)
+            if res < len(nums) - k:
+                return self.findKthLargest(nums[res + 1:], k)
+            elif res > len(nums) - k:
+                return self.findKthLargest(nums[:res], k - len(nums)+res)
+            else:
+                return nums[res]
+
+    def quick(self, nums, l, r):
+        t = l
+        while l < r:
+            while nums[r] > nums[t]:
+                r -= 1
+            if nums[l] <= nums[t] and l < r:
+                l += 1
+            else:
+                nums[r], nums[l] = nums[l], nums[r]
+        nums[t], nums[l] = nums[l], nums[t]
+        return l
+
+#实在不行这种简洁的方式也挺好的：
+class Solution:
+# @param {integer[]} nums
+# @param {integer} k
+# @return {integer}
+def findKthLargest(self, nums, k):
+    # QuickSelect idea: AC in 52 ms
+    # ---------------------------
+    #
+    pivot = nums[0]
+    left  = [l for l in nums if l < pivot]
+    equal = [e for e in nums if e == pivot]
+    right = [r for r in nums if r > pivot]
+
+    if k <= len(right):
+        return self.findKthLargest(right, k)
+    elif (k - len(right)) <= len(equal):
+        return equal[0]
+    else:
+        return self.findKthLargest(left, k - len(right) - len(equal))
