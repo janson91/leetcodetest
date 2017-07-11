@@ -1,0 +1,56 @@
+#先做成图，然后入度为零加入队列，然后一个一个清空队列里的元素，如果队列空了，但是没有访问完图，说明有环（就是无论怎么搞都不能把环内的节点入度变成0）
+#广度优先
+import Queue
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        graph=[[] for i in xrange(numCourses)]
+        indegree=[0 for i in xrange(numCourses)]
+        for i,j in prerequisites:
+            graph[i].append(j)
+            indegree[j]+=1
+        queue=Queue.Queue()
+        for i in xrange(numCourses):
+            if indegree[i]==0:
+                queue.put(i)
+        count = queue.qsize()
+        while not queue.empty():
+            q=queue.get()
+            for i in graph[q]:
+                indegree[i]-=1
+                if indegree[i]==0:
+                    queue.put(i)
+                    count+=1
+        return count==numCourses
+#深度优先
+import Queue
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        graph=[[] for i in xrange(numCourses)]
+        isvisit=[0 for i in xrange(numCourses)]
+        for i,j in prerequisites:
+            graph[i].append(j)
+        def dfs(i):
+            if isvisit[i]==-1:
+                return False
+            if isvisit[i]==1:
+                return True
+            isvisit[i]=-1
+            for j in graph[i]:
+                if not dfs(j):
+                    return False
+            isvisit[i]=1
+            return True
+        for i in xrange(numCourses):
+            if not dfs(i):
+                return False
+        return True
