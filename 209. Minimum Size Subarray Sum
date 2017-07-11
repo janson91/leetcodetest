@@ -1,0 +1,21 @@
+#思考题是如果能想出来O(n)的，能不能想到O(nlgn)的，挺有意思的，就是题目有点坑，竟然是大于等于，这个显示器显示的是问号，读题不认真啊
+class Solution(object):
+    def minSubArrayLen(self, s, nums):
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        res=len(nums)+1
+        left=0
+        sums=0
+        for right in range(len(nums)):
+            sums+=nums[right]
+            while sums>=s:
+                res=min(res,right-left+1)
+                sums-=nums[left]
+                left+=1
+        if res>len(nums):
+            return 0
+        else:
+            return res
