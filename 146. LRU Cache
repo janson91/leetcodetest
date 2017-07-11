@@ -1,0 +1,98 @@
+#链表现在的解决办法是多画，因为不太好调试。右边节点是不是空！是不是把所有的指针都处理完了？另外python可以直接用orderedDic就可以
+class LRUCache(object):
+    
+    class Node(object):
+        def __init__(self,key, val):
+            self.key=key
+            self.val=val
+            self.left=None
+            self.right=None
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.cap=capacity
+        self.dic={}
+        self.head=self.Node(-1,-1)
+        self.tail=self.Node(-1,-1)
+        self.count=0
+        
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        # print 'dic',
+        # for k in self.dic.keys():
+        #     print k,
+        # print ' '
+        if key not in self.dic:
+            return -1
+        else:
+            # test=self.head
+            # while test:
+            #     print test.val
+            #     test=test.right
+            if self.head.right.right:
+                node=self.dic[key]  
+                if node==self.tail.left:
+                    # print '------'
+                    self.tail.left=node.left
+                    # print 'nowtail',self.tail.left.val
+                node.left.right=node.right
+                if node.right:
+                    node.right.left=node.left
+                node.left=self.head
+                node.right=self.head.right
+                node.right.left=node
+                self.head.right=node
+                return node.val
+            else:
+                return self.dic[key].val
+        
+
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: void
+        """
+
+        # print 'now put ',key,value
+        if self.get(key)!=-1:
+            self.dic[key].val=value
+        else:
+            node=self.Node(key,value)
+            if not self.head.right:
+                self.head.right=node
+                node.left=self.head
+                self.tail.left=node
+            else:
+                node.right=self.head.right
+                node.right.left=node
+                self.head.right=node
+                node.left=self.head
+            self.count+=1
+            # print 'count', self.count
+            self.dic[key]=node
+            if self.count>self.cap:
+                self.count-=1
+                left=self.tail.left
+                # print 'delete',left.key
+                self.tail.left=self.dic.pop(left.key).left
+                self.tail.left.right=None
+        # print 'tail',self.tail.left.val
+        # test=self.head
+        # while test:
+        #     print test.val,
+        #     test=test.right
+        # print ' '
+        
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
