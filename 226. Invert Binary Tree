@@ -1,0 +1,40 @@
+#仿佛智障
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def invertTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        stack=[root]
+        if any(stack):
+            new_stack=[]
+            for s in stack:
+                if not s:
+                    new_stack.append(None)
+                    new_stack.append(None)
+                else:
+                    new_stack.append(s.left)
+                    new_stack.append(s.right)
+            for i,s in enumerate(stack):
+                if s:
+                    s.left=self.invertTree(new_stack[-i-1])
+                    s.right=self.invertTree(new_stack[-i-2])
+            stack=new_stack
+        return root
+
+#正解
+class Solution(object):
+	def invertTree(self,root):
+		# Keywords: Tree, Depth first search (DFS)
+		if root is None: return None
+		[root.left, root.right] = [root.right, root.left]
+		self.invertTree(root.left)
+		self.invertTree(root.right)
+		return root
