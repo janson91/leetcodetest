@@ -1,0 +1,54 @@
+#其实用循环就行！！！不用迭代！！！
+#另外！！！很重要！！！O（n）的算法，想得很巧妙！！！
+class Solution(object):
+    def findDuplicate(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        def search(nums,i,j):
+            if i==j:
+                return i
+            mid=(i+j)/2
+            count=0
+            for n in nums:
+                if n<=mid:
+                    count+=1
+            if count>mid:
+                return search(nums,i,mid)
+            else:
+                return search(nums,mid+1,j)
+        return search(nums,1,len(nums)-1)
+
+
+
+#The main idea is the same with problem Linked List Cycle II,https://leetcode.com/problems/linked-list-cycle-ii/. 
+#Use two pointers the fast and the slow. 
+#The fast one goes forward two steps each time, while the slow one goes only step each time. 
+#They must meet the same item when slow==fast. 
+#In fact, they meet in a circle, the duplicate number must be the entry point of the circle when visiting the array from nums[0]. 
+#Next we just need to find the entry point. 
+#We use a point(we can use the fast one before) to visit form begining with one step each time, do the same job to slow. 
+#When fast==slow, they meet at the entry point of the circle. The easy understood code is as follows.
+int findDuplicate3(vector<int>& nums)
+{
+	if (nums.size() > 1)
+	{
+		int slow = nums[0];
+		int fast = nums[nums[0]];
+		while (slow != fast)
+		{
+			slow = nums[slow];
+			fast = nums[nums[fast]];
+		}
+
+		fast = 0;
+		while (fast != slow)
+		{
+			fast = nums[fast];
+			slow = nums[slow];
+		}
+		return slow;
+	}
+	return -1;
+}
