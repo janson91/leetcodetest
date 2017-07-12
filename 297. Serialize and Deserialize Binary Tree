@@ -1,0 +1,70 @@
+#看有答案用的是迭代
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        # print "serialize"
+        cache=[root]
+        res=[]
+        while any(cache):
+            new_cache=[]
+            for node in cache:
+                if node:
+                    res.append(node.val)
+                    new_cache.append(node.left)
+                    new_cache.append(node.right)
+                else:
+                    res.append('null')
+            cache=new_cache
+        # print '['+','.join(str(i) for i in res)+']'
+        return '['+','.join(str(i) for i in res)+']'
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        # print "deserialize"
+        if len(data)<3:
+            return None
+        # print data
+        source=[]
+        for n in data[1:-1].split(','):
+            if n=='null':
+                source.append(None)
+            else:
+                source.append(TreeNode(int(n)))
+        
+        cache=[source[0]]
+        i=1
+        while i < len(source):
+            temp=[]
+            for node in cache:
+                if node:
+                    node.left=source[i]
+                    temp.append(source[i])
+                    i+=1
+                    node.right=source[i]
+                    temp.append(source[i])
+                    i+=1
+            cache=temp
+        return source[0]
+            
+        
+
+# Your Codec object will be instantiated and called as such:
+# codec = Codec()
+# codec.deserialize(codec.serialize(root))
