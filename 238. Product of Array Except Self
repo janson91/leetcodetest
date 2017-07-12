@@ -1,0 +1,38 @@
+#自己写的还是麻烦了
+class Solution(object):
+    def productExceptSelf(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        res=[0]*len(nums)
+        before=1
+        for i in range(len(nums)):
+            res[i]=before*nums[i]
+            before*=nums[i]
+        before=1
+        for i in range(len(nums)):
+            if i==len(nums)-1:
+                res[-i-1]=before
+            else:
+                res[-i-1]=before*res[-i-2]
+            before*=nums[-i-1]
+        return res
+
+
+
+class Solution:
+    # @param {integer[]} nums
+    # @return {integer[]}
+    def productExceptSelf(self, nums):
+        p = 1
+        n = len(nums)
+        output = []
+        for i in range(0,n):
+            output.append(p)
+            p = p * nums[i]
+        p = 1
+        for i in range(n-1,-1,-1):
+            output[i] = output[i] * p
+            p = p * nums[i]
+        return output
