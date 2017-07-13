@@ -1,0 +1,23 @@
+#http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums)==0:
+            return 0
+        tail=[]
+        for n in nums:
+            i,j=0,len(tail)
+            while i < j:
+                mid=(i+j)/2
+                if tail[mid]>=n:
+                    j=mid
+                else:
+                    i=mid+1
+            if j==len(tail):
+                tail.append(n)
+            else:
+                tail[j]=n
+        return len(tail)
