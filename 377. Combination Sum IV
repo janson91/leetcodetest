@@ -1,0 +1,19 @@
+#动态规划
+class Solution(object):
+    def combinationSum4(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        res=[1]+[0]*target
+        nums.sort()
+        for i in range(target+1):
+            for n in nums:
+                if n>i:
+                    break
+                elif n==i:
+                    res[i]+=1
+                else:
+                    res[i]+=res[i-n]
+        return res[-1]
