@@ -1,0 +1,16 @@
+#可以再看，dp
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if len(prices)==0:
+            return 0
+        b1=b=-prices[0]
+        s2=s1=s=0
+        for n in prices:
+            b=max(s2-n, b1)
+            s=max(b1+n,s1)
+            s2=s1;s1=s;b1=b
+        return s
