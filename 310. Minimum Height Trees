@@ -1,0 +1,63 @@
+#人家的，想法是一样的，但是数据结构很重要
+if n == 1: return [0] 
+        adj = [set() for _ in xrange(n)]
+        for i, j in edges:
+            adj[i].add(j)
+            adj[j].add(i)
+
+        leaves = [i for i in xrange(n) if len(adj[i]) == 1]
+
+        while n > 2:
+            n -= len(leaves)
+            newLeaves = []
+            for i in leaves:
+                j = adj[i].pop()
+                adj[j].remove(i)
+                if len(adj[j]) == 1: newLeaves.append(j)
+            leaves = newLeaves
+        return leaves
+
+
+
+
+
+
+
+#最开始的想法：超时了在63 / 66 test cases passed.处
+class Solution(object):
+    def findMinHeightTrees(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        if n==1:
+            return [0]
+        loop=True
+        while loop:
+            nodes=[0]*n
+            for edge in edges:
+                nodes[edge[0]]+=1
+                nodes[edge[1]]+=1
+            test=0
+            loop=False
+            for i,node in enumerate(nodes):
+                if node!=0:
+                    if node>nodes[test]:
+                        test=i
+                    if not loop and nodes[test]!=node:
+                        loop=True
+            if not loop:
+                res=set()
+                for e in edges:
+                    res.add(e[0])
+                    res.add(e[1])
+                return list(res)
+
+            leave=[]
+            for edge in edges:
+                if nodes[edge[0]]!=1 and nodes[edge[1]]!=1:
+                    leave.append(edge)
+            edges=leave
+            if len(leave)<1:
+                return [test]
