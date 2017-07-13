@@ -1,0 +1,37 @@
+###超时了
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        res = []
+        p = "".join(sorted(list(p)))
+        n = len(p)
+        for i in range(len(s)-len(p)+1):
+            if p == "".join(sorted(list(s[i:i+n]))):
+                res.append(i)
+        return res
+        
+        
+#这个对，用Counter，相当于用了字典
+from collections import Counter
+class Solution(object):
+    def findAnagrams(self, s, p):
+        """
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """
+        res=[]
+        pCounter=Counter(p)
+        qCounter=Counter(s[:len(p)-1])
+        for i in range(len(p)-1, len(s)):
+            qCounter[s[i]]+=1
+            if qCounter==pCounter:
+                res.append(i-len(p)+1)
+            qCounter[s[i-len(p)+1]]-=1
+            if qCounter[s[i-len(p)+1]]==0:
+                del qCounter[s[i-len(p)+1]]
+        return res
