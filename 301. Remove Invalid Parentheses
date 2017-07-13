@@ -1,0 +1,24 @@
+#挺好的题，自己没做上
+class Solution(object):
+    def removeInvalidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        
+        def isvalid(s):
+            count=0
+            for n in s:
+                if n=='(':
+                    count+=1
+                elif n==')':
+                    count-=1
+                    if count<0:
+                        return False
+            return count==0
+        level={s}
+        while True:
+            valid=filter(isvalid,level)
+            if valid:
+                return valid
+            level={s[:i]+s[i+1:] for s in level for i in range(len(s))}
