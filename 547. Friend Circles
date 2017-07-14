@@ -1,0 +1,22 @@
+#广度优先搜索
+class Solution(object):
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        s=set()
+        count=0
+        for i in range(len(M)):
+            if i not in s:
+                s.add(i)
+                count+=1
+                temp=set()
+                temp.add(i)
+                while len(temp)>0:
+                    t=temp.pop()
+                    s.add(t)
+                    for j in range(len(M)):
+                        if M[t][j] and j not in s:
+                            temp.add(j)
+        return count
