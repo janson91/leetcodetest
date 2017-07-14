@@ -1,0 +1,38 @@
+#O(n)的方法，可能是因为python的for循环，所以超时了
+class Solution(object):
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        count = 0
+        cache = []
+        for i in range(len(nums)):
+            temp = []
+            for j in range(i, len(nums)):
+                if len(cache) > 0:
+                    s = nums[j] + cache[j-i]
+                else:
+                    s = nums[j]
+                if s == k: count += 1
+                temp.append(s)
+            cache = temp
+        return count
+
+#这个方法O(n)复杂度，O(n)空间复杂度
+class Solution(object):
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        count = collections.Counter()
+        count[0] = 1
+        su = res = 0
+        for x in nums:
+            su += x
+            res += count[su-k]
+            count[su] += 1
+        return res
