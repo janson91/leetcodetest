@@ -1,0 +1,20 @@
+class Solution(object):
+    def findTargetSumWays(self, nums, S):
+        """
+        :type nums: List[int]
+        :type S: int
+        :rtype: int
+        """
+        if len(nums)==0:
+            return S==0
+        res={0:1}
+        for n in nums:
+            temp={}
+            for key,val in res.items():
+                if key+n in temp: temp[key+n]+=val
+                else: temp[key+n]=val
+                if key-n in temp: temp[key-n]+=val
+                else: temp[key-n]=val
+            res=temp
+        if S in res: return res[S]
+        else: return 0
