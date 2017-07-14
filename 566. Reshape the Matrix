@@ -1,0 +1,18 @@
+class Solution(object):
+    def matrixReshape(self, nums, r, c):
+        """
+        :type nums: List[List[int]]
+        :type r: int
+        :type c: int
+        :rtype: List[List[int]]
+        """
+        if not len(nums)>0 or not len(nums[0])>0:
+            return nums
+        x = len(nums[0])
+        if len(nums) * x != r * c:
+            return nums
+        res = [[0] * c for _ in range(r)]
+        for i in range(len(nums)):
+            for j in range(x):
+                res[(i*x+j)/c][(i*x+j)%c] = nums[i][j]
+        return res
