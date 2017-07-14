@@ -1,0 +1,39 @@
+#用的中序遍历，大家都用先序遍历
+class Solution(object):
+    def findMode(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+        res=[]
+        def dfs(root,res,flag=0,count=0,max_count=0):
+            if root == None:
+                return res,flag,count,max_count
+            res,flag,count,max_count=dfs(root.left,res,flag,count,max_count)
+            if len(res)==0:
+                res.append(root.val)
+                count=1
+                flag=root.val
+            else:
+                if root.val==flag:
+                    count+=1
+                else:
+                    if count>max_count:
+                        res=[flag]
+                        max_count=count
+                        count=1
+                    elif count==max_count:
+                        res.append(flag)
+                        count=1
+                    else:
+                        count=1
+                    flag=root.val
+            return dfs(root.right,res,flag,count,max_count)
+        res,flag,count,max_count=dfs(root,res)
+        if count>max_count:
+            res=[flag]
+        elif count==max_count:
+            res.append(flag)
+        return res
