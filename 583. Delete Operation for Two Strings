@@ -1,0 +1,44 @@
+#类似于编辑距离，二维DP。但实际上不同于编辑距离，从最长公共子序列来思考会更简单
+class Solution(object):
+    def minDistance(self, word1, word2):
+        """
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        l1 = len(word1)
+        l2 = len(word2)
+        if l1 == 0 or l2 == 0:
+            return max(l1, l2)
+        grid = [[0]*l1 for x in range(l2)]
+        grid[0] = range(l1)
+        for i in range(l1):
+            if word1[i] != word2[0]:
+                grid[0][i] += 2
+            else:
+                break
+        # print grid
+        for i in range(l2):
+            grid[i][0] = i
+        for i in range(l2):
+            if word2[i] != word1[0]:
+                grid[i][0] += 2
+            else:
+                break
+        # print grid
+        for i in range(1, l2):
+            for j in range(1, l1):
+                if word2[i] == word1[j]:
+                    grid[i][j] = min(grid[i-1][j-1], grid[i-1][j]+1, grid[i][j-1]+1)
+                else:
+                    grid[i][j] = min(grid[i-1][j-1]+2, grid[i-1][j]+1, grid[i][j-1]+1)
+        # print grid
+        return grid[-1][-1]
+#但实际上不同于编辑距离，从最长公共子序列来思考会更简单
+def minDistance(self, w1, w2):
+        m, n = len(w1), len(w2)
+        dp = [[0] * (n + 1) for i in range(m + 1)]
+        for i in range(m):
+            for j in range(n):
+                dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j], dp[i][j] + (w1[i] == w2[j]))
+        return m + n - 2 * dp[m][n]
