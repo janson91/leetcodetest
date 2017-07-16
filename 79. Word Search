@@ -1,5 +1,5 @@
 #基本参考别人的，不过感觉这个挺精致的
-#可以再看一遍，动态规划的花式做法
+#可以再看一遍，dfs的花式做法
 class Solution(object):
     def exist(self, board, word):
         """
