@@ -26,3 +26,27 @@ class Solution(object):
             or self.dfs(board,i+1,j,word[1:]) or self.dfs(board,i,j+1,word[1:])
         board[i][j]=tmp
         return res
+
+#剑指offer12题，又写了一遍，这次就感觉不是很难了
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        def dfs(board, i, j, word, flag):
+            if flag == len(word): return True
+            if 0 <= i and i < len(board) and 0 <= j and j < len(board[i]) and board[i][j] == word[flag]:
+                temp = board[i][j]
+                board[i][j] = '#'
+                res = dfs(board, i-1, j, word, flag+1) or dfs(board, i+1, j, word, flag+1) \
+                        or dfs(board, i, j-1, word, flag+1) or dfs(board, i, j+1, word, flag+1)
+                board[i][j] = temp
+                return res
+            return False
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if dfs(board, i, j, word, 0):
+                    return True 
+        return False
