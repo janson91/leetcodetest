@@ -1,3 +1,38 @@
+#自己的版本
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        if len(matrix) == 0:
+            return []
+        starti = startj = 0
+        endi = len(matrix)
+        endj = len(matrix[0])
+        res = []
+        while starti < endi and startj < endj:
+            if starti < endi:
+                for j in range(startj, endj): 
+                    res.append(matrix[starti][j])
+                starti += 1
+            if startj < endj:
+                for i in range(starti, endi):
+                    res.append(matrix[i][endj-1])
+                endj -= 1
+            if starti < endi:
+                for j in range(startj, endj)[::-1]:
+                    res.append(matrix[endi-1][j])
+                endi -= 1
+            if startj < endj:
+                for i in range(starti, endi)[::-1]:
+                    res.append(matrix[i][startj])
+                startj += 1
+        return res
+
+
+
+#别人的
 class Solution(object):
     def spiralOrder(self, matrix):
         """
