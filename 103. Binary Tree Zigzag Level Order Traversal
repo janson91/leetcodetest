@@ -1,0 +1,30 @@
+一天不动笔就容易技能退化，不过这个结果还不错，36ms。另外都说用deque，感觉没必要
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def zigzagLevelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        res = []
+        stack = [root]
+        while len(stack) > 0:
+            new_stack = []
+            res.append([])
+            for temp in stack:
+                if temp:
+                    res[-1].append(temp.val)
+                    new_stack.append(temp.left)
+                    new_stack.append(temp.right)
+            stack = new_stack
+            if len(res) % 2 == 0:
+                res[-1] = res[-1][::-1]
+        if len(res[-1]) == 0:
+            res.pop()
+        return res
