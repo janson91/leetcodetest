@@ -1,0 +1,14 @@
+#这个题竟然是hard，可能是因为数学知识。另外自己找规律也没有solution找的这么漂亮 https://leetcode.com/problems/number-of-digit-one/#/solution
+class Solution(object):
+    def countDigitOne(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        i = 1
+        res = 0
+        while i <= n:
+            count = i * 10
+            res += n / count * i + min(max(n % count - i + 1, 0), i)
+            i *= 10
+        return res
