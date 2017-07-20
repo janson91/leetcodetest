@@ -1,0 +1,22 @@
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        word = ""
+        for w in s.split(' ')[::-1]:
+            if w != "" and w != " ":
+                word += w + " "
+        return word.strip()
+        
+        
+        
+#或者：
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        return " ".join(s.strip().split()[::-1])
